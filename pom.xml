@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>kafka-connect-transform</artifactId>
+    <version>1.0.0</version>
+    <name>kafka-connect-transform</name>
+    <url>https://github.com/tilakpatidar/kafka-connect-transform</url>
+    <inceptionYear>2021</inceptionYear>
+    <groupId>com.github.tilakpatidar.kafka.connect</groupId>
+    <description>Common transformations for Kafka Connect.</description>
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <url>https://packages.confluent.io/maven/</url>
+        </repository>
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/tilakpatidar/kafka-connect-transform/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>tilakpatidar</id>
+            <name>Tilak Patidar</name>
+            <url>https://github.com/tilakpatidar</url>
+            <roles>
+                <role>Committer</role>
+            </roles>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:https://github.com/tilakpatidar/kafka-connect-transform.git</connection>
+        <developerConnection>scm:git:git@github.com:tilakpatidar/kafka-connect-transform.git</developerConnection>
+        <url>https://github.com/tilakpatidar/kafka-connect-transform</url>
+    </scm>
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/tilakpatidar/kafka-connect-transform/issues</url>
+    </issueManagement>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/io.confluent/kafka-connect-storage-partitioner -->
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-connect-storage-partitioner</artifactId>
+            <version>10.2.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.kafka/connect-api -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>connect-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.confluent</groupId>
+                <artifactId>kafka-connect-maven-plugin</artifactId>
+                <version>0.12.0</version>
+                <configuration>
+                    <confluentControlCenterIntegration>true</confluentControlCenterIntegration>
+                    <documentationUrl>https://github.com/tilakpatidar/kafka-connect-transform</documentationUrl>
+                    <componentTypes>
+                        <componentType>transform</componentType>
+                    </componentTypes>
+                    <title>Kafka Connect Transformations</title>
+                    <supportUrl>${project.issueManagement.url}</supportUrl>
+                    <supportSummary>Support provided through community involvement.</supportSummary>
+                    <ownerName>Tilak Patidar</ownerName>
+                    <ownerUsername>tilakpatidar</ownerUsername>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

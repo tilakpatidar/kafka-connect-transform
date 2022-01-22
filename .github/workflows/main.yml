@@ -1,0 +1,39 @@
+name: Build and Publish artifacts
+
+on: [push]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - name: Test with mvn
+        run: mvn test
+      - name: Build Fat jar for manual installation
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: mvn org.apache.maven.plugins:maven-assembly-plugin:single
+      - name: Build Confluent zip file
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: mvn io.confluent:kafka-connect-maven-plugin:kafka-connect
+      - name: Check if built zip file installable in confluent
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          docker run --rm \
+          -e CONNECT_PLUGIN_PATH='/usr/share/java,/usr/share/confluent-hub-components/' \
+          --entrypoint "" \
+          -v $PWD:/app \
+          confluentinc/cp-kafka-connect-base bash -c 'confluent-hub install --no-prompt /app/target/components/packages/tilakpatidar-kafka-connect-*.zip && test -f /usr/share/confluent-hub-components/tilakpatidar-kafka-connect-transform/lib/kafka-connect-transform-*.jar'
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          files: |
+            target/kafka-connect-transform*.jar
+            target/components/packages/tilakpatidar-kafka-connect-transform-*.zip
+
